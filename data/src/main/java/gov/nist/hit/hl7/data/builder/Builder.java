@@ -9,51 +9,17 @@
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  */
-package gov.nist.hit.hl7.data.domain;
+package gov.nist.hit.hl7.data.builder;
+
+import java.util.List;
 
 /**
  * @author Abdelghani El Ouakili
  *
  */
-public class Code {
+public interface Builder<T> {
 
-	private String value;
-	private String name;
-	private String codeUsage;
-	private String codeSystem;
-	private String codeSystemOid;
-
-	public String getCodeSystem() {
-		return codeSystem;
-	}
-
-	public void setCodeSystem(String codeSystem) {
-		this.codeSystem = codeSystem;
-	}
-
-	public String getCodeSystemOid() {
-		return codeSystemOid;
-	}
-
-	public void setCodeSystemOid(String codeSystemOid) {
-		this.codeSystemOid = codeSystemOid;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCodeUsage() {
-		return codeUsage;
-	}
-	public void setCodeUsage(String codeUsage) {
-		this.codeUsage = codeUsage;
-	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
+	public T buildByIdentifierAndVersion(String identifier, String version);
+	public List<T> buildByVersion(String version);
+	public List<T> buildAll();
 }

@@ -42,8 +42,10 @@ public class DataApplication {
 
 	@Autowired
 	private ValueSetRepository dataValueSetRepo;
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
 	@Autowired
 	NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
 	

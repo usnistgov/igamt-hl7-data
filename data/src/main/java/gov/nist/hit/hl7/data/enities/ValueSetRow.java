@@ -30,7 +30,7 @@ public class ValueSetRow {
 	public String oid;
 	public String valueSetOid;
 	public String codeSystemOid;
-	public String CodeSystem;
+	public String codeSystem;
 	public String version;
 
 	@Override

@@ -11,16 +11,11 @@
  */
 package gov.nist.hit.hl7.data.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.Entity;
-import javax.persistence.SqlResultSetMapping;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Abdelghani El Ouakili
@@ -29,15 +24,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class ValueSet extends Resource {
-	
+
+
 
 	@Id
 	private String id; 
 	private String bindingIdentifier; 
 	private String hl7TableType;
 	private String oid;
-	private List<Code> children = new ArrayList<Code>();
+	private String codeSystem;
 
+	public void setCodeSystem(String codeSystem) {
+		this.codeSystem = codeSystem;
+	}
+	public String getCodeSystem() {
+		return codeSystem;
+	}
+	private List<Code> children = new ArrayList<Code>();
 	
 	public List<Code> getChildren() {
 		return children;
