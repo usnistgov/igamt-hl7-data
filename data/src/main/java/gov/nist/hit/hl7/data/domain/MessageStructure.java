@@ -11,19 +11,25 @@
  */
 package gov.nist.hit.hl7.data.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
 /**
  * @author Abdelghani El Ouakili
  *
  */
-public class Message extends Resource{
-	
-	
+@Document
+public class MessageStructure extends Resource{
+
+	@Id
+	private String id;
 	private String messageType;
 	private String structID;
-	private String event;
-	
+	private List<Event> events;
+	private List<MessageStructureElement> children;
+
 	public String getMessageType() {
 		return messageType;
 	}
@@ -36,18 +42,11 @@ public class Message extends Resource{
 	public void setStructID(String structID) {
 		this.structID = structID;
 	}
-	public String getEvent() {
-		return event;
-	}
-	public void setEvent(String event) {
-		this.event = event;
-	}
 	public List<MessageStructureElement> getChildren() {
 		return children;
 	}
 	public void setChildren(List<MessageStructureElement> children) {
 		this.children = children;
 	}
-	private List<MessageStructureElement> children;
 
 }

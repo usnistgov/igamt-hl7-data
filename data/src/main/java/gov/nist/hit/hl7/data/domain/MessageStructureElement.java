@@ -17,4 +17,14 @@ package gov.nist.hit.hl7.data.domain;
  */
 public class MessageStructureElement extends RepeatableStructureElement {
 
+    private String usage;
+
+    public String getUsage() {
+        return usage;
+    }
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+    public MessageStructureElement() {
+    }
 }

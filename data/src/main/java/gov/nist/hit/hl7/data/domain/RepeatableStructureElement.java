@@ -15,10 +15,33 @@ package gov.nist.hit.hl7.data.domain;
  * @author Abdelghani El Ouakili
  *
  */
-public class RepeatableStructureElement extends StructureElement {
-
+public class RepeatableStructureElement {
+	private int position;
 	private String minCard;
 	private String maxCard;
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+
+	public RepeatableStructureElement() {
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	private String name;
 
 	public String getMinCard() {
 		return minCard;

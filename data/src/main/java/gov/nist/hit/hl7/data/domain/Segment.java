@@ -11,13 +11,27 @@
  */
 package gov.nist.hit.hl7.data.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
 /**
  * @author Abdelghani El Ouakili
  *
  */
+@Document
 public class Segment extends Resource {
+	@Id
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	private List<Field> children;
 

@@ -18,7 +18,7 @@ package gov.nist.hit.hl7.data.domain;
 public class StructureElement {
 	
 	protected  String name;
-	protected String position;
+	protected int position;
 	protected String usage;
 	protected String length;
 	protected String minLength;
@@ -32,10 +32,10 @@ public class StructureElement {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPosition() {
+	public int getPosition() {
 		return position;
 	}
-	public void setPosition(String position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 	public String getUsage() {

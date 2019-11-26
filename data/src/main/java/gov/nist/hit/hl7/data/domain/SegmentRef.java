@@ -15,9 +15,15 @@ package gov.nist.hit.hl7.data.domain;
  * @author Abdelghani El Ouakili
  *
  */
-public class SegementRef extends MessageStructureElement {
+public class SegmentRef extends MessageStructureElement {
 
 	private String segment;
-	
-	
+
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
+	}
 }

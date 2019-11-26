@@ -11,22 +11,39 @@
  */
 package gov.nist.hit.hl7.data.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
 /**
  * @author Abdelghani El Ouakili
  *
  */
+@Document
 public class Datatype extends Resource {
+	@Id
+	private String id;
 
-	private List<Component> components;
+	private List<Component> children;
+	private String type;
 
-	public List<Component> getComponents() {
-		return components;
+
+	public String getType() {
+		return type;
 	}
 
-	public void setComponents(List<Component> components) {
-		this.components = components;
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	public List<Component> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Component> components) {
+		this.children = components;
 	}
 	
 }

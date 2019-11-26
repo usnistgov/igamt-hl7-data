@@ -15,12 +15,34 @@ package gov.nist.hit.hl7.data.domain;
  * @author Abdelghani El Ouakili
  *
  */
-public class Field extends RepeatableStructureElement {
+public class Field extends StructureElement {
 
 	private String table;
 	private String datatype;
-	
-	public String getTable() {
+	private String minCard;
+	private String maxCard;
+
+	public String getMinCard() {
+		return minCard;
+	}
+
+	public void setMinCard(String minCard) {
+		this.minCard = minCard;
+	}
+
+	public String getMaxCard() {
+		return maxCard;
+	}
+
+	public void setMaxCard(String maxCard) {
+		this.maxCard = maxCard;
+	}
+
+	public Field() {
+        super();
+    }
+
+    public String getTable() {
 		return table;
 	}
 	public void setTable(String table) {

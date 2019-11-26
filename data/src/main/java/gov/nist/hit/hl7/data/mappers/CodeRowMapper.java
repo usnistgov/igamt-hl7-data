@@ -24,9 +24,6 @@ import gov.nist.hit.hl7.data.enities.CodeRow;
  */
 public class CodeRowMapper implements RowMapper<CodeRow> {
 
-	/* (non-Javadoc)
-	 * @see org.springframework.jdbc.core.RowMapper#mapRow(java.sql.ResultSet, int)
-	 */
 	@Override
 	public CodeRow mapRow(ResultSet result, int arg1) throws SQLException {
 		CodeRow ret = new CodeRow();

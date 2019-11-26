@@ -10,6 +10,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.sql.DataSource;
 
+import gov.nist.hit.hl7.data.repository.SegmentRepository;
+import gov.nist.hit.hl7.data.transformer.DatatypeTransformer;
+import gov.nist.hit.hl7.data.transformer.MessageTransformer;
+import gov.nist.hit.hl7.data.transformer.SegmentTransformer;
+import gov.nist.hit.hl7.data.transformer.ValueSetTransformer;
+import gov.nist.hit.hl7.igamt.conformanceprofile.domain.ConformanceProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +28,7 @@ import gov.nist.hit.hl7.data.repository.ValueSetRepository;
 import gov.nist.hit.hl7.data.service.ValueSetMappingService;
 import gov.nist.hit.hl7.igamt.valueset.service.ValuesetService;
 
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -39,23 +46,21 @@ public class DataApplication {
 
 	@PersistenceContext
 	public EntityManager em;
+	@Autowired
+	ValueSetTransformer valueSetTransformer;
 
 	@Autowired
-	private ValueSetRepository dataValueSetRepo;
-	
+	SegmentRepository repo;
+
 	@Autowired
-	JdbcTemplate jdbcTemplate;
-	
+	SegmentTransformer segmentTransformer;
+
 	@Autowired
-	NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
-	
+	DatatypeTransformer datatypeTransformer;
+
 	@Autowired
-	DataSource datasource;
-	 
-	@Autowired
-	private ValuesetService igamtVsService;
-	@Autowired
-	ValueSetMappingService valueSetMapper;
+	MessageTransformer messageTransformer;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(DataApplication.class, args);
@@ -63,12 +68,8 @@ public class DataApplication {
 
 	@PostConstruct
 	public void testData() {
-		
-		List<CodeRow> list  = valueSetMapper.findByCodesByBindingIdentifierAndVersion("0001","2.8.1");
-		System.out.println(list);
-//		this.dataValueSetRepo.save(new ValueSet());
-//		System.out.println(this.igamtVsService.findAll().size());
-		
+
+		messageTransformer.tansformAll();
 
 	}
 
