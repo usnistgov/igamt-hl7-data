@@ -11,6 +11,7 @@ public class ValueSetTransformer implements Transformer<ValueSet> {
 
     @Autowired
     ValueSetBuilder valueSetBuilder;
+
     @Autowired
     ValueSetRepository valueSetRepository;
 

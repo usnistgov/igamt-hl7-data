@@ -55,14 +55,14 @@ public class SegmentBuilder implements Builder<Segment> {
         return ret;
     }
     private List<Field> getFields(SegmentRow row) {
-        List<Field> Fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<>();
         List<FieldRow> FieldRows = segmentMappingService.findChildrenByNameAndVersion(row.seg_code, row.hl7_version);
-        if(FieldRows != null ){
-            for(FieldRow FieldRow: FieldRows){
-                Fields.add(convertField(FieldRow));
+        if (FieldRows != null ) {
+            for (FieldRow FieldRow: FieldRows) {
+                fields.add(convertField(FieldRow));
             }
         }
-        return Fields;
+        return fields;
     }
 
     private Field convertField(FieldRow row) {
@@ -78,7 +78,6 @@ public class SegmentBuilder implements Builder<Segment> {
         f.setDatatype(row.datatype);
         f.setMaxCard(row.minCard);
         f.setMinCard(row.minCard);
-
         return f;
     }
 

@@ -7,9 +7,9 @@ import gov.nist.hit.hl7.data.enities.DatatypeRow;
 import gov.nist.hit.hl7.data.service.DatatypeMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class DatatypeBuilder implements Builder<Datatype> {
 
@@ -73,9 +73,9 @@ public class DatatypeBuilder implements Builder<Datatype> {
         c.setVersion(row.version);
         c.setTable(row.table);
         c.setDatatype(row.datatype);
-
         return c;
     }
+
 
 
 }

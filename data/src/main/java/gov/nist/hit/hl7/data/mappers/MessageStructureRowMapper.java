@@ -14,6 +14,7 @@ public class MessageStructureRowMapper implements RowMapper<MessageStructureRow>
         row.messageType = resultSet.getString("message type");
         row.hl7Version = resultSet.getString("version");
         row.structID = resultSet.getString("message structure");
+
         return row;
     }
 }

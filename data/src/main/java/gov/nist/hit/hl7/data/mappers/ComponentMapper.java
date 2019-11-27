@@ -19,6 +19,8 @@ public class ComponentMapper implements RowMapper<ComponentRow> {
         row.confLength = resultSet.getString("confLength");
         row.table = resultSet.getString("table");
         row.datatype = resultSet.getString("datatype");
+        row.version = resultSet.getString("version");
+
         return row;
     }
 }

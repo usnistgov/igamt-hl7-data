@@ -3,6 +3,7 @@ package gov.nist.hit.hl7.data.service.impl;
 import gov.nist.hit.hl7.data.enities.EventRow;
 import gov.nist.hit.hl7.data.enities.MessageStructureRow;
 import gov.nist.hit.hl7.data.enities.SegmentGroupRow;
+import gov.nist.hit.hl7.data.mappers.EventRowMapper;
 import gov.nist.hit.hl7.data.mappers.MessageStructureRowMapper;
 import gov.nist.hit.hl7.data.mappers.SegmentAndGroupRowMapper;
 import gov.nist.hit.hl7.data.service.MessageStructureMappingService;
@@ -48,8 +49,7 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
                 "AND (emt.message_structure_return, emt.version_id) \n" +
                 "IN (\n" +
                 "\tSELECT mss.message_structure, mss.version_id \n" +
-                "    FROM hl7msgstructidsegments AS mss);";
-
+                "    FROM hl7msgstructidsegments AS mss);\n";
         return this.namedParameterJdbcTemplate.query(query, new MessageStructureRowMapper());
 
     }
@@ -97,6 +97,38 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
 
     @Override
     public List<EventRow> findEventByVersionAndStructure(String version, String structID) {
-        return null;
+        String query ="SELECT DISTINCT emt.message_typ_snd AS 'message type', mt.description as 'message type description', emt.event_code as 'event code', e.description as 'event description', emt.message_structure_snd as 'message structure', v.hl7_version as 'version'\n" +
+                "FROM hl7eventmessagetypes as emt\n" +
+                "LEFT JOIN hl7versions as v\n" +
+                "ON v.version_id = emt.version_id\n" +
+                "LEFT JOIN hl7events AS e\n" +
+                "ON e.version_id = v.version_id AND e.event_code = emt.event_code\n" +
+                "LEFT JOIN hl7messagetypes AS mt\n" +
+                "ON mt.version_id = v.version_id AND emt.message_typ_snd = mt.message_type\n" +
+                "WHERE v.hl7_version =:version\n" +
+                "AND emt.message_structure_snd= :message_structure_id\n" +
+                "AND (emt.message_structure_snd, emt.version_id) \n" +
+                "IN (\n" +
+                "\tSELECT mss.message_structure, mss.version_id \n" +
+                "    FROM hl7msgstructidsegments AS mss)\n" +
+                "UNION\n" +
+                "SELECT DISTINCT emt.message_typ_return AS 'message type', mt.description as 'message type description', emt.event_code as 'event code', e.description as 'event description', emt.message_structure_return as 'message structure', v.hl7_version as 'version'\n" +
+                "FROM hl7eventmessagetypes as emt\n" +
+                "LEFT JOIN hl7versions as v\n" +
+                "ON v.version_id = emt.version_id\n" +
+                "LEFT JOIN hl7events AS e\n" +
+                "ON e.version_id = v.version_id AND e.event_code = emt.event_code\n" +
+                "LEFT JOIN hl7messagetypes AS mt\n" +
+                "ON mt.version_id = v.version_id AND emt.message_typ_return = mt.message_type\n" +
+                "WHERE v.hl7_version =:version\n" +
+                "AND emt.message_structure_return=:message_structure_id\n" +
+                "AND (emt.message_structure_return, emt.version_id) \n" +
+                "IN (\n" +
+                "\tSELECT mss.message_structure, mss.version_id \n" +
+                "    FROM hl7msgstructidsegments AS mss);\n" +
+                "\n";
+        SqlParameterSource p = new MapSqlParameterSource().addValue("version", version).addValue("message_structure_id", structID);
+        return this.namedParameterJdbcTemplate.query(query ,p,  new EventRowMapper());
     }
+
 }

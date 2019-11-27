@@ -29,7 +29,32 @@ public class MessageStructure extends Resource{
 	private String structID;
 	private List<Event> events;
 	private List<MessageStructureElement> children;
+	private String hl7Version;
 
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
 	public String getMessageType() {
 		return messageType;
 	}
