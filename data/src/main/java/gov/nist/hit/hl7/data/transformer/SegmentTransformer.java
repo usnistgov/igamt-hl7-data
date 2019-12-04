@@ -15,7 +15,7 @@ public class SegmentTransformer implements Transformer<Segment> {
     SegmentBuilder builder;
 
     @Override
-    public void tansformAll() {
+    public void transformAll() {
         this.repo.deleteAll();
         this.repo.saveAll(builder.buildAll());
     }

@@ -16,7 +16,7 @@ public class ValueSetTransformer implements Transformer<ValueSet> {
     ValueSetRepository valueSetRepository;
 
     @Override
-    public void tansformAll() {
+    public void transformAll() {
         valueSetRepository.deleteAll();
         valueSetRepository.saveAll(valueSetBuilder.buildAll());
     }

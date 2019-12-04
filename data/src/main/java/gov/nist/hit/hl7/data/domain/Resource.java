@@ -17,9 +17,9 @@ package gov.nist.hit.hl7.data.domain;
  */
 public class Resource {
 
-	protected String name;
-	protected String description;
-	protected String version;
+	private String name;
+	private String description;
+	private String version;
 
 	public String getDescription() {
 		return description;

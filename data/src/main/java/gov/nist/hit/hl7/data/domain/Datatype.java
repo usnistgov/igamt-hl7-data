@@ -24,24 +24,23 @@ import java.util.List;
 public class Datatype extends Resource {
 	@Id
 	private String id;
-
 	private List<Component> children;
 	private String type;
-
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
-
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public List<Component> getChildren() {
 		return children;
 	}
-
 	public void setChildren(List<Component> components) {
 		this.children = components;
 	}

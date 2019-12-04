@@ -28,11 +28,13 @@ public class ValueSet extends Resource {
 
 
 	@Id
-	private String id; 
-	private String bindingIdentifier; 
+	private String id;
+	private String bindingIdentifier;
 	private String hl7TableType;
 	private String oid;
 	private String codeSystem;
+	private List<Code> children = new ArrayList<Code>();
+
 
 	public void setCodeSystem(String codeSystem) {
 		this.codeSystem = codeSystem;
@@ -40,8 +42,6 @@ public class ValueSet extends Resource {
 	public String getCodeSystem() {
 		return codeSystem;
 	}
-	private List<Code> children = new ArrayList<Code>();
-	
 	public List<Code> getChildren() {
 		return children;
 	}
@@ -54,12 +54,6 @@ public class ValueSet extends Resource {
 	public void setBindingIdentifier(String bindingIdentifier) {
 		this.bindingIdentifier = bindingIdentifier;
 	}
-	public String getVersion() {
-		return version;
-	}
-	public void setVersion(String version) {
-		this.version = version;
-	}
 	public String getHl7TableType() {
 		return hl7TableType;
 	}
@@ -71,5 +65,11 @@ public class ValueSet extends Resource {
 	}
 	public void setOid(String oid) {
 		this.oid = oid;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }

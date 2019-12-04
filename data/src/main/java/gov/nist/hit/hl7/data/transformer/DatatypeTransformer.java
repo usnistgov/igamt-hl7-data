@@ -14,7 +14,7 @@ public class DatatypeTransformer implements Transformer<Datatype> {
     DatatypeBuilder builder;
 
     @Override
-    public void tansformAll() {
+    public void transformAll() {
         this.repo.deleteAll();
         this.repo.saveAll(this.builder.buildAll());
     }

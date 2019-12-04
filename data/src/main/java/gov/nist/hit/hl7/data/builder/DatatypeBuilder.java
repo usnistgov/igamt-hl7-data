@@ -47,8 +47,9 @@ public class DatatypeBuilder implements Builder<Datatype> {
         ret.setVersion(row.hl7_version);
         ret.setDescription(row.description);
         ret.setType(row.type);
-        ret.setChildren(getComponents(row));
-
+        if (row.type.equals("complex")) {
+            ret.setChildren(getComponents(row));
+        }
         return ret;
     }
     private List<Component> getComponents(DatatypeRow row) {

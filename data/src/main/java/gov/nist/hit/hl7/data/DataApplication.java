@@ -15,51 +15,46 @@ import gov.nist.hit.hl7.data.transformer.DatatypeTransformer;
 import gov.nist.hit.hl7.data.transformer.MessageTransformer;
 import gov.nist.hit.hl7.data.transformer.SegmentTransformer;
 import gov.nist.hit.hl7.data.transformer.ValueSetTransformer;
-import gov.nist.hit.hl7.igamt.conformanceprofile.domain.ConformanceProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import gov.nist.hit.hl7.data.domain.ValueSet;
-import gov.nist.hit.hl7.data.enities.CodeRow;
-import gov.nist.hit.hl7.data.enities.ValueSetRow;
-import gov.nist.hit.hl7.data.repository.ValueSetRepository;
-import gov.nist.hit.hl7.data.service.ValueSetMappingService;
-import gov.nist.hit.hl7.igamt.valueset.service.ValuesetService;
-
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-
-import javax.sql.DataSource;
-
-
 @SpringBootApplication
 @ComponentScan({"gov.nist.hit.hl7.igamt.common", "gov.nist.hit.hl7.igamt.datatype", "gov.nist.hit.hl7.igamt.segment", "gov.nist.hit.hl7.igamt.valueset",
-	"gov.nist.hit.hl7.igamt.conformanceprofile","gov.nist.hit.hl7.data"})
+	"gov.nist.hit.hl7.igamt.conformanceprofile","gov.nist.hit.hl7.igamt.common.config","gov.nist.hit.hl7.data"})
 public class DataApplication {
 
 	@PersistenceContext
 	public EntityManager em;
 	@Autowired
-	ValueSetTransformer valueSetTransformer;
+	ValueSetTransformer valueSetTransformerF1;
+
+	@Autowired
+	gov.nist.hit.hl7.data.igamt.transformer.ValueSetTransformer  valueSetTransformerF2;
+
+
+	@Autowired
+	gov.nist.hit.hl7.data.igamt.transformer.DatatypeTransformer  datatypeTransformerF2;
+
+	@Autowired
+	gov.nist.hit.hl7.data.igamt.transformer.SegmentTransformer  segmentTransformerF2;
+
 
 	@Autowired
 	SegmentRepository repo;
 
 	@Autowired
-	SegmentTransformer segmentTransformer;
+	SegmentTransformer segmentTransformerF1;
 
 	@Autowired
-	DatatypeTransformer datatypeTransformer;
+	DatatypeTransformer datatypeTransformerF1;
 
 	@Autowired
-	MessageTransformer messageTransformer;
+	MessageTransformer messageTransformerF1;
+
+	@Autowired
+
 
 
 	public static void main(String[] args) {
@@ -67,9 +62,19 @@ public class DataApplication {
 	}
 
 	@PostConstruct
-	public void testData() {
+	public void transform() {
 
-		messageTransformer.tansformAll();
+		// First transformation
+//		valueSetTransformerF1.transformAll();
+//		datatypeTransformerF1.transformAll();
+//		segmentTransformerF1.transformAll();
+//		messageTransformerF1.transformAll();
+
+		//
+		valueSetTransformerF2.transformAll();
+		datatypeTransformerF2.transformAll();
+		segmentTransformerF2.transformAll();
+	//	messageTransformerF2.transformAll();
 
 	}
 

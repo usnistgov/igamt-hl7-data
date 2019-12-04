@@ -16,7 +16,7 @@ public class MessageTransformer implements Transformer<MessageStructure> {
     MessageBuilder builder;
 
     @Override
-    public void tansformAll() {
+    public void transformAll() {
         this.repo.deleteAll();
         this.repo.saveAll(this.builder.buildAll());
     }
