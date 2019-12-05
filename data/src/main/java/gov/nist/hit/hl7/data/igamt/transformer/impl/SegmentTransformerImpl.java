@@ -39,10 +39,8 @@ public class SegmentTransformerImpl implements SegmentTransformer {
         List<ValueSet>  valueSetList = this.vsRepo.findAll();
         for(ValueSet  vs: valueSetList){
             RealKey temKey=  new RealKey(vs.getVersion(), vs.getBindingIdentifier());
-            if(!vsMap.containsKey(temKey)){
-                vsMap.put(temKey,new BindingWrapper(vs.getId(), vs.getHl7TableType()));
-            }else {
-                System.out.println(temKey);
+            if(!vsMap.containsKey(temKey)) {
+                vsMap.put(temKey, new BindingWrapper(vs.getId(), vs.getHl7TableType()));
             }
         }
         List<Datatype> dts = this.datatypeRepo.findAll();
@@ -51,8 +49,6 @@ public class SegmentTransformerImpl implements SegmentTransformer {
             RealKey temKey=  new RealKey(dt.getVersion(), dt.getName());
             if(!datatypesMap.containsKey(temKey)){
                 datatypesMap.put(temKey,dt.getId());
-            }else {
-                System.out.println(temKey);
             }
         }
         List<gov.nist.hit.hl7.igamt.segment.domain.Segment> segments = transformAll(minifiedSegments, datatypesMap, vsMap);
@@ -115,6 +111,7 @@ public class SegmentTransformerImpl implements SegmentTransformer {
         Ref ref = new Ref();
         RealKey referenceKey = new RealKey(version, f.getDatatype());
         ref.setId(segmentsMap.get(referenceKey));
+        ret.setRef(ref);
         if (f.getTable() != null && !f.getTable().isEmpty()) {
             RealKey tableKey = new RealKey(version, f.getTable());
             if (vsMap.containsKey(tableKey)) {

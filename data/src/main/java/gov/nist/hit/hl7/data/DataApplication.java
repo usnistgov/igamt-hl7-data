@@ -39,7 +39,8 @@ public class DataApplication {
 
 	@Autowired
 	gov.nist.hit.hl7.data.igamt.transformer.SegmentTransformer  segmentTransformerF2;
-
+	@Autowired
+	gov.nist.hit.hl7.data.igamt.transformer.MessageTransformer  messageTransformerF2;
 
 	@Autowired
 	SegmentRepository repo;
@@ -68,10 +69,10 @@ public class DataApplication {
 //		valueSetTransformerF1.transformAll();
 //		datatypeTransformerF1.transformAll();
 //		segmentTransformerF1.transformAll();
-//		messageTransformerF1.transformAll();
+		//messageTransformerF1.transformAll();
 
 		//
-		valueSetTransformerF2.transformAll();
+//		valueSetTransformerF2.transformAll();
 		datatypeTransformerF2.transformAll();
 		segmentTransformerF2.transformAll();
 	//	messageTransformerF2.transformAll();

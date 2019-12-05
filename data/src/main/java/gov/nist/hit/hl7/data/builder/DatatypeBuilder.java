@@ -41,7 +41,6 @@ public class DatatypeBuilder implements Builder<Datatype> {
     }
 
     private Datatype convertDatatype(DatatypeRow row) {
-
         Datatype ret = new Datatype();
         ret.setName(row.data_type_code);
         ret.setVersion(row.hl7_version);
@@ -76,7 +75,6 @@ public class DatatypeBuilder implements Builder<Datatype> {
         c.setDatatype(row.datatype);
         return c;
     }
-
 
 
 }

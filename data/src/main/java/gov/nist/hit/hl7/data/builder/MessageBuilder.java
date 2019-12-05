@@ -47,7 +47,7 @@ public class MessageBuilder implements Builder<MessageStructure> {
         structure.setDescription(row.description);
         structure.setMessageType(row.messageType);
         structure.setStructID(row.structID);
-        structure.setHl7Version(row.hl7Version);
+        structure.setVersion(row.hl7Version);
         List<SegmentGroupRow> rows = mapper.findChildrenByVersionAndStrcutureID(row.hl7Version, row.structID);
         structure.setChildren(buildChildren(rows));
         List<Event> events = this.buildEventsByVersionAndStructure(row.hl7Version, row.structID);
@@ -118,11 +118,19 @@ public class MessageBuilder implements Builder<MessageStructure> {
     private List<Event> buildEventsByVersionAndStructure(String version, String structID ) {
         List<EventRow> eventRows = mapper.findEventByVersionAndStructure(version, structID);
         List<Event> events = new ArrayList<>();
+        if (structID.equals("ACK")) {
+            Event ev = new Event();
+            ev.setHl7Version(version);
+            ev.setDescription("General Acknowledgment Message");
+            ev.setName("Varies");
+            events.add(ev);
+            return events;
+        }
         for (EventRow eventRow: eventRows) {
             Event ev = new Event();
-            ev.setHl7Version(eventRow.name);
+            ev.setHl7Version(eventRow.hl7Version);
             ev.setDescription(eventRow.description);
-            ev.setName(eventRow.hl7Version);
+            ev.setName(eventRow.name);
             events.add(ev);
         }
         return events;

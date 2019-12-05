@@ -16,10 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-/**
- * @author Abdelghani El Ouakili
- *
- */
 @Document
 public class MessageStructure extends Resource{
 
@@ -29,16 +25,6 @@ public class MessageStructure extends Resource{
 	private String structID;
 	private List<Event> events;
 	private List<MessageStructureElement> children;
-	private String hl7Version;
-
-
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
 
 	public String getId() {
 		return id;

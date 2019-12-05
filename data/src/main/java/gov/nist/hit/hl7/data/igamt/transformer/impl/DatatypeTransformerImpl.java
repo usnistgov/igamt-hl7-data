@@ -133,6 +133,7 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
         Ref ref = new Ref();
         RealKey referenceKey = new RealKey(version, c.getDatatype());
         ref.setId(datatypesMap.get(referenceKey));
+        ret.setRef(ref);
         if (c.getTable() != null && !c.getTable().isEmpty()) {
             RealKey tableKey = new RealKey(version, c.getTable());
             if (vsMap.containsKey(tableKey)) {
