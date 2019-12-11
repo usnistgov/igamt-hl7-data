@@ -4,6 +4,7 @@ import gov.nist.hit.hl7.data.domain.*;
 import gov.nist.hit.hl7.data.domain.RealKey;
 import gov.nist.hit.hl7.data.igamt.transformer.BindingTransformerService;
 import gov.nist.hit.hl7.data.igamt.transformer.SegmentTransformer;
+import gov.nist.hit.hl7.data.igamt.transformer.TransformationUtil;
 import gov.nist.hit.hl7.data.repository.DatatypeRepository;
 import gov.nist.hit.hl7.data.repository.SegmentRepository;
 import gov.nist.hit.hl7.data.repository.ValueSetRepository;
@@ -30,6 +31,8 @@ public class SegmentTransformerImpl implements SegmentTransformer {
 
     @Autowired
     ValueSetRepository vsRepo;
+    @Autowired
+    TransformationUtil util;
 
     @Override
     public void transformAll() {
@@ -99,20 +102,20 @@ public class SegmentTransformerImpl implements SegmentTransformer {
     public gov.nist.hit.hl7.igamt.segment.domain.Field transformField(gov.nist.hit.hl7.data.domain.Field f, String version, Map<RealKey, String> segmentsMap, Map<RealKey, BindingWrapper> vsMap, ResourceBinding binding) {
         gov.nist.hit.hl7.igamt.segment.domain.Field ret = new gov.nist.hit.hl7.igamt.segment.domain.Field();
         ret.setName(f.getName());
-        ret.setConfLength(f.getConfLength());
-        ret.setMinLength(f.getMinLength());
-        ret.setMaxLength(f.getMaxLength());
+        ret.setConfLength(util.getLength(f.getConfLength()));
+        ret.setMinLength(util.getLength(f.getMinLength()));
+        ret.setMaxLength(util.getLength(f.getMaxLength()));
         ret.setId(new ObjectId().toString());
         ret.setPosition(f.getPosition());
         ret.setType(Type.FIELD);
         ret.setMin(Integer.parseInt(f.getMinCard()));
         ret.setMax(f.getMaxCard());
-        ret.setUsage(Usage.fromString(f.getUsage()));
+        ret.setUsage(util.getUsage(f.getUsage()));
         Ref ref = new Ref();
         RealKey referenceKey = new RealKey(version, f.getDatatype());
         ref.setId(segmentsMap.get(referenceKey));
         ret.setRef(ref);
-        if (f.getTable() != null && !f.getTable().isEmpty()) {
+        if (f.getTable() != null && !f.getTable().isEmpty() && !f.getTable().equals("0000")) {
             RealKey tableKey = new RealKey(version, f.getTable());
             if (vsMap.containsKey(tableKey)) {
                 bindingService.addBinding(binding, ret, referenceKey, tableKey, vsMap.get(tableKey));

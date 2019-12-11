@@ -56,13 +56,13 @@ public class DatatypeBuilder implements Builder<Datatype> {
         List<ComponentRow> componentRows = datatypeMappingService.findChildrenByNameAndVersion(row.data_type_code, row.hl7_version);
         if(componentRows != null ){
             for(ComponentRow componentRow: componentRows){
-                components.add(convertComponent(componentRow));
+                components.add(convertComponent(componentRow, row.data_type_code));
             }
         }
         return components;
     }
 
-    private Component convertComponent(ComponentRow row) {
+    private Component convertComponent(ComponentRow row, String name) {
         Component c = new Component();
         c.setPosition(row.position);
         c.setName(row.description);
@@ -71,10 +71,14 @@ public class DatatypeBuilder implements Builder<Datatype> {
         c.setMaxLength(row.maxLength);
         c.setConfLength(row.confLength);
         c.setVersion(row.version);
-        c.setTable(row.table);
-        c.setDatatype(row.datatype);
+        if(!row.table.equals("0000")){
+            c.setTable(row.table);
+        }
+        if(row.datatype.toLowerCase().equals(name)){
+            c.setDatatype("-");
+        }else {
+            c.setDatatype(row.datatype);
+        }
         return c;
     }
-
-
 }

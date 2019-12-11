@@ -50,6 +50,10 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
         ret.setId(valueset.getId());
         ret.setBindingIdentifier(valueset.getBindingIdentifier());
         ret.setName(valueset.getDescription());
+        ret.setName(valueset.getName());
+        Set<String> codeSystems = new HashSet<String>();
+        codeSystems.add(valueset.getCodeSystem());
+        ret.setCodeSystems(codeSystems);
         ret.setOid(valueset.getOid());
         ret.setDescription(valueset.getDescription());
         ret.setOid(valueset.getOid());
@@ -74,7 +78,12 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
         ret.setCodeSystemOid(code.getCodeSystemOid());
         ret.setValue(code.getValue());
         ret.setDescription(code.getName());
-        ret.setUsage(CodeUsage.valueOf(code.getCodeUsage()));
+        if(code.getCodeUsage() == null ||  code.getCodeUsage().isEmpty() || code.getCodeUsage().equals("O")) {
+            ret.setUsage(CodeUsage.P);
+        }
+        else {
+           ret.setUsage(CodeUsage.valueOf(code.getCodeUsage()));
+        }
         return ret;
     }
 

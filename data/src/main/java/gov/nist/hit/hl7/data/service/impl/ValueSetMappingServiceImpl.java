@@ -32,17 +32,17 @@ import gov.nist.hit.hl7.data.service.ValueSetMappingService;
 public class ValueSetMappingServiceImpl implements ValueSetMappingService {
 	@Autowired
 	NamedParameterJdbcTemplate  namedParameterJdbcTemplate;
-	
-	
+
 	@Override
 	public List<ValueSetRow> findAllValueSets() {
-		String query = "SELECT t.table_id as table_id, LPAD(table_id, 4, '0') as bindingIdentifier, t.vs_oid as 'value set oid', t.cs_oid as 'code system oid' , CONCAT('HL7',LPAD(t.table_id, 4, '0')) as 'code system', tt.description as hl7TableType, v.hl7_version as version\n" +
+		String query = "SELECT t.table_id as table_id, LPAD(table_id, 4, '0') as bindingIdentifier, t.vs_oid as 'value set oid', t.cs_oid as 'code system oid' , CONCAT('HL7',LPAD(t.table_id, 4, '0')) as 'code system', tt.description as hl7TableType, v.hl7_version as version , t.description_as_pub as description\n" +
 				"FROM hl7tables as t\n" +
 				"LEFT JOIN hl7versions as v\n" +
 				"ON t.version_id = v.version_id\n" +
 				"LEFT JOIN hl7tabletypes as tt\n" +
 				"ON t.table_type = tt.table_type\n" +
 				"WHERE v.hl7_version IN ('2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
+				"AND t.table_id <> 0\n" +
 				"ORDER BY t.table_id;";
 		
 		return this.namedParameterJdbcTemplate.query(query , new ValueSetRowMapper());

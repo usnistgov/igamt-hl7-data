@@ -75,6 +75,9 @@ public class SegmentBuilder implements Builder<Segment> {
         f.setConfLength(row.confLength);
         f.setVersion(row.version);
         f.setTable(row.table);
+        if(!row.table.equals("0000")){
+            f.setTable(row.table);
+        }
         f.setDatatype(row.datatype);
         f.setMaxCard(row.minCard);
         f.setMinCard(row.minCard);

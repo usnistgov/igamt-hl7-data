@@ -20,19 +20,34 @@ public class DatatypeMappingServiceImpl  implements DatatypeMappingService {
 
     @Override
     public List<DatatypeRow> findAll() {
-        String query = "SELECT DISTINCT d.data_type_code, d.description, \n" +
+        String query = "SELECT DISTINCT DISTINCT d.data_type_code, d.description,  \n" +
                 "CASE ds.elementary \n" +
                 "\tWHEN 'TRUE' THEN 'primitive'\n" +
                 "    WHEN 'FALSE' THEN 'complex'\n" +
-                "END as type, \n" +
-                "v.hl7_version \n" +
+                "END as type,  \n" +
+                "v.hl7_version\n" +
                 "FROM hl7datatypes d\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON d.version_id = v.version_id\n" +
                 "LEFT JOIN hl7datastructures as ds\n" +
                 "ON (ds.data_type_code = d.data_type_code OR ds.data_structure = d.data_type_code)\n" +
                 "AND ds.version_id = v.version_id\n" +
-                "WHERE v.hl7_version IN ('2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9');";
+                "WHERE v.hl7_version IN ('2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
+                "-- PRIMITIVE datatypes\n" +
+                "AND (ds.elementary = 'TRUE' \n" +
+                "-- COMPLEX datatypes\n" +
+                "OR (ds.elementary = 'FALSE' \n" +
+                "AND d.data_type_code NOT IN\n" +
+                "\n" +
+                "(SELECT DISTINCT DISTINCT d1.data_type_code\n" +
+                "FROM hl7datatypes d1\n" +
+                "LEFT JOIN hl7versions as v1\n" +
+                "ON d1.version_id = v1.version_id\n" +
+                "LEFT JOIN hl7datastructures as ds1\n" +
+                "ON (ds1.data_type_code = d1.data_type_code OR ds1.data_structure = d1.data_type_code)\n" +
+                "AND ds1.version_id = v1.version_id\n" +
+                "WHERE v1.hl7_version = v.hl7_version\n" +
+                "AND ds1.elementary = 'TRUE')));";
 
         return this.namedParameterJdbcTemplate.query(query , new DatatypeMapper());
     }

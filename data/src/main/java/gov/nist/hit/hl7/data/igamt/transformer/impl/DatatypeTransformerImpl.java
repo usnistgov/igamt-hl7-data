@@ -5,6 +5,7 @@ import gov.nist.hit.hl7.data.domain.*;
 import gov.nist.hit.hl7.data.domain.RealKey;
 import gov.nist.hit.hl7.data.igamt.transformer.BindingTransformerService;
 import gov.nist.hit.hl7.data.igamt.transformer.DatatypeTransformer;
+import gov.nist.hit.hl7.data.igamt.transformer.TransformationUtil;
 import gov.nist.hit.hl7.data.repository.DatatypeRepository;
 import gov.nist.hit.hl7.data.repository.ValueSetRepository;
 import gov.nist.hit.hl7.igamt.common.base.domain.*;
@@ -33,6 +34,8 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
 
     @Autowired
     ValueSetRepository vsRepo;
+    @Autowired
+    TransformationUtil util;
 
     @Override
     public void transformAll() {
@@ -96,7 +99,7 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
         binding.setChildren(new HashSet<StructureElementBinding>());
         ret.setBinding(binding);
         for (Component c : dt.getChildren()) {
-            components.add(transformComponent(c, dt.getVersion(), datatypesMap, vsMap, ret.getBinding()));
+            components.add(transformComponent(dt.getName(), c, dt.getVersion(), datatypesMap, vsMap, ret.getBinding()));
         }
         ret.setComponents(components);
 
@@ -120,21 +123,21 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
         elm.setDomainInfo(info);
     }
 
-    public gov.nist.hit.hl7.igamt.datatype.domain.Component transformComponent(Component c, String version, Map<RealKey, String> datatypesMap, Map<RealKey, BindingWrapper> vsMap, ResourceBinding binding) {
+    public gov.nist.hit.hl7.igamt.datatype.domain.Component transformComponent(String dtName, Component c, String version, Map<RealKey, String> datatypesMap, Map<RealKey, BindingWrapper> vsMap, ResourceBinding binding) {
         gov.nist.hit.hl7.igamt.datatype.domain.Component ret = new gov.nist.hit.hl7.igamt.datatype.domain.Component();
         ret.setName(c.getName());
-        ret.setConfLength(c.getConfLength());
-        ret.setMinLength(c.getMinLength());
-        ret.setMaxLength(c.getMaxLength());
+        ret.setConfLength(util.getLength(c.getConfLength()));
+        ret.setMinLength(util.getLength(c.getMinLength()));
+        ret.setMaxLength(util.getLength(c.getMaxLength()));
         ret.setId(new ObjectId().toString());
         ret.setPosition(c.getPosition());
         ret.setType(Type.COMPONENT);
-        ret.setUsage(Usage.fromString(c.getUsage()));
+        ret.setUsage(util.getUsage(c.getUsage()));
         Ref ref = new Ref();
         RealKey referenceKey = new RealKey(version, c.getDatatype());
         ref.setId(datatypesMap.get(referenceKey));
         ret.setRef(ref);
-        if (c.getTable() != null && !c.getTable().isEmpty()) {
+        if (c.getTable() != null && !c.getTable().isEmpty() && !c.getTable().equals("0000")) {
             RealKey tableKey = new RealKey(version, c.getTable());
             if (vsMap.containsKey(tableKey)) {
                 bindingService.addBinding(binding, ret, referenceKey, tableKey, vsMap.get(tableKey));
@@ -142,7 +145,4 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
         }
         return ret;
     }
-
-
-
 }

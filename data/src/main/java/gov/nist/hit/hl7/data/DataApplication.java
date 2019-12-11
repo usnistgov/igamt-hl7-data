@@ -66,16 +66,16 @@ public class DataApplication {
 	public void transform() {
 
 		// First transformation
-//		valueSetTransformerF1.transformAll();
-//		datatypeTransformerF1.transformAll();
-//		segmentTransformerF1.transformAll();
-		//messageTransformerF1.transformAll();
+		valueSetTransformerF1.transformAll();
+		datatypeTransformerF1.transformAll();
+		segmentTransformerF1.transformAll();
+		messageTransformerF1.transformAll();
 
-		//
-//		valueSetTransformerF2.transformAll();
+
+		valueSetTransformerF2.transformAll();
 		datatypeTransformerF2.transformAll();
 		segmentTransformerF2.transformAll();
-	//	messageTransformerF2.transformAll();
+		messageTransformerF2.transformAll();
 
 	}
 

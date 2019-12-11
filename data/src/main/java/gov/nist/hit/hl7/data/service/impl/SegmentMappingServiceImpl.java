@@ -23,7 +23,7 @@ public class SegmentMappingServiceImpl implements SegmentMappingService {
                 "FROM hl7segments s\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON s.version_id = v.version_id\n" +
-                "WHERE s.seg_code REGEXP '[A-Z0-1]{3}'\n" +
+                "WHERE s.seg_code REGEXP '[A-Z0-9]{3}'\n" +
                 "AND v.hl7_version IN ('2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')";
         return this.namedParameterJdbcTemplate.query(query, new SegmentMapper());
     }

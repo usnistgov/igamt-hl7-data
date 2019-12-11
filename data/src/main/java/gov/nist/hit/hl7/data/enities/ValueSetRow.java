@@ -32,6 +32,7 @@ public class ValueSetRow {
 	public String codeSystemOid;
 	public String codeSystem;
 	public String version;
+	public String name;
 
 	@Override
 	public String toString() {

@@ -83,6 +83,7 @@ public class MessageBuilder implements Builder<MessageStructure> {
         group.setMinCard(segmentGroupRow.minCard);
         group.setUsage(segmentGroupRow.usage);
         group.setName(segmentGroupRow.groupName);
+        group.setPosition(start);
         int relativePosition= 0;
 
         List<MessageStructureElement> children = new ArrayList<>();

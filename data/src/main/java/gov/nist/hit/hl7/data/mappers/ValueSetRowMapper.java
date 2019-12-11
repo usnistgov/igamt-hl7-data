@@ -34,6 +34,8 @@ public class ValueSetRowMapper implements RowMapper<ValueSetRow> {
 		ret.codeSystemOid = result.getString("code system oid");
 		ret.valueSetOid = result.getString("value set oid");
 		ret.codeSystem = result.getString("code system");
+		ret.name= result.getString("description");
+
 		return ret;
 	}
 

@@ -50,7 +50,6 @@ public class BindingTransformerServiceImpl implements BindingTransformerService 
                     List<BindingLocationOption> options = info.getAllowedBindingLocations().get(referenceKey.getVersion().replace(".", "-"));
                     valuesetBinding.setValuesetLocations(new HashSet<>(options.get(0).getValue()));
                 }
-
             }
             vsBindings.add(valuesetBinding);
             elmBinding.setValuesetBindings(vsBindings);

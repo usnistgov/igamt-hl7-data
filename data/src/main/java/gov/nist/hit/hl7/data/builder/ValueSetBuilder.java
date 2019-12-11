@@ -69,6 +69,7 @@ public class ValueSetBuilder implements Builder<ValueSet> {
 		vs.setOid(row.oid);
 		vs.setVersion(row.version);
 		vs.setHl7TableType(row.hl7TableType);
+		vs.setName(row.name);
 		vs.setChildren(buildCodes(row));
 		return vs;
 	}
