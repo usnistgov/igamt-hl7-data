@@ -55,6 +55,7 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
         codeSystems.add(valueset.getCodeSystem());
         ret.setCodeSystems(codeSystems);
         ret.setOid(valueset.getOid());
+        ret.setHl7Type(valueset.getHl7TableType());
         ret.setDescription(valueset.getDescription());
         ret.setOid(valueset.getOid());
         DomainInfo info = new DomainInfo();

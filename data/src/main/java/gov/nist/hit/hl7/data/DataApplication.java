@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.sql.DataSource;
 
+import gov.nist.hit.hl7.data.igamt.transformer.adapters.FiveLevelAdapter;
 import gov.nist.hit.hl7.data.repository.SegmentRepository;
 import gov.nist.hit.hl7.data.transformer.DatatypeTransformer;
 import gov.nist.hit.hl7.data.transformer.MessageTransformer;
@@ -29,6 +30,9 @@ public class DataApplication {
 	public EntityManager em;
 	@Autowired
 	ValueSetTransformer valueSetTransformerF1;
+
+	@Autowired
+	FiveLevelAdapter fiveLevelAdapter;
 
 	@Autowired
 	gov.nist.hit.hl7.data.igamt.transformer.ValueSetTransformer  valueSetTransformerF2;
@@ -70,8 +74,14 @@ public class DataApplication {
 		datatypeTransformerF1.transformAll();
 		segmentTransformerF1.transformAll();
 		messageTransformerF1.transformAll();
+		// add Data to IGAMT Requirement
 
 
+		fiveLevelAdapter.createNistDatatypes();
+		fiveLevelAdapter.fixFiveLevelDatatypes();
+
+
+		// final transformation
 		valueSetTransformerF2.transformAll();
 		datatypeTransformerF2.transformAll();
 		segmentTransformerF2.transformAll();

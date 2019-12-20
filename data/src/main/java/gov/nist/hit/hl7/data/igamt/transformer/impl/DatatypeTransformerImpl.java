@@ -47,8 +47,6 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
             RealKey temKey=  new RealKey(vs.getVersion(), vs.getBindingIdentifier());
             if(!vsMap.containsKey(temKey)){
                 vsMap.put(temKey,new BindingWrapper(vs.getId(), vs.getHl7TableType()));
-            }else {
-                System.out.println(temKey);
             }
         }
         List<Datatype> dts = this.dataRepo.findAll();
@@ -57,8 +55,6 @@ public class DatatypeTransformerImpl implements DatatypeTransformer {
             RealKey temKey=  new RealKey(dt.getVersion(), dt.getName());
             if(!datatypesMap.containsKey(temKey)){
                 datatypesMap.put(temKey,dt.getId());
-            }else {
-                System.out.println(temKey);
             }
         }
 

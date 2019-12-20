@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository("datatypeDataRepo")
 public interface DatatypeRepository extends MongoRepository<Datatype, String> {
+
+   public  Datatype findByNameAndVersion(String name, String version);
 }
