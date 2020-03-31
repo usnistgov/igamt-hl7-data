@@ -14,6 +14,7 @@ package gov.nist.hit.hl7.data.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nist.hit.hl7.data.IdService;
 import gov.nist.hit.hl7.data.domain.Code;
 import gov.nist.hit.hl7.data.enities.CodeRow;
 import gov.nist.hit.hl7.data.enities.ValueSetRow;
@@ -30,9 +31,10 @@ import gov.nist.hit.hl7.data.domain.ValueSet;
 @Service
 public class ValueSetBuilder implements Builder<ValueSet> {
 
-
 	@Autowired
 	ValueSetMappingService valueSetMappingService;
+	@Autowired
+	IdService idService;
 
 	@Override
 	public ValueSet buildByIdentifierAndVersion(String identifier, String version) {
@@ -63,7 +65,7 @@ public class ValueSetBuilder implements Builder<ValueSet> {
 
 	private ValueSet convertToValueSet(ValueSetRow row) {
 		ValueSet vs  = new ValueSet();
-		vs.setBindingIdentifier(row.bindingIdentifier);
+		vs.setBindingIdentifier("HL7" + row.bindingIdentifier);
 		vs.setOid(row.valueSetOid);
 		vs.setCodeSystem(row.codeSystem);
 		vs.setOid(row.oid);
@@ -71,6 +73,7 @@ public class ValueSetBuilder implements Builder<ValueSet> {
 		vs.setHl7TableType(row.hl7TableType);
 		vs.setName(row.name);
 		vs.setChildren(buildCodes(row));
+		vs.setId(idService.buildId(vs));
 		return vs;
 	}
 

@@ -70,24 +70,44 @@ public class DataApplication {
 	public void transform() {
 
 		// First transformation
-		valueSetTransformerF1.transformAll();
-		datatypeTransformerF1.transformAll();
-		segmentTransformerF1.transformAll();
-		messageTransformerF1.transformAll();
-		// add Data to IGAMT Requirement
-
-
-		fiveLevelAdapter.createNistDatatypes();
-		fiveLevelAdapter.fixFiveLevelDatatypes();
+//		valueSetTransformerF1.transformAll();
+//		datatypeTransformerF1.transformAll();
+//		segmentTransformerF1.transformAll();
+//		messageTransformerF1.transformAll();
+//		// add Data to IGAMT Requirement
+//
+//
+//		fiveLevelAdapter.createNistDatatypes();
+//		fiveLevelAdapter.fixFiveLevelDatatypes();
 
 
 		// final transformation
-		valueSetTransformerF2.transformAll();
-		datatypeTransformerF2.transformAll();
-		segmentTransformerF2.transformAll();
+//		valueSetTransformerF2.transformAll();
+//		datatypeTransformerF2.transformAll();
+//		segmentTransformerF2.transformAll();
 		messageTransformerF2.transformAll();
 
 	}
 
 
+	@PostConstruct
+	public void updateAll() {
+
+		// First transformation
+//		valueSetTransformerF1.transformAll();
+//		datatypeTransformerF1.transformAll();
+//		segmentTransformerF1.transformAll();
+	//	messageTransformerF1.transformAll();
+		// add Data to IGAMT Requirement
+//		fiveLevelAdapter.createNistDatatypes();
+//		fiveLevelAdapter.fixFiveLevelDatatypes();
+//
+//
+//		// final transformation
+//		valueSetTransformerF2.transformAll();
+//		datatypeTransformerF2.transformAll();
+//		segmentTransformerF2.transformAll();
+	//messageTransformerF2.transformAll();
+
+	}
 }

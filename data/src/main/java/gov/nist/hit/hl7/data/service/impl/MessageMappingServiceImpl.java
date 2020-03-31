@@ -23,33 +23,33 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
     @Override
     public List<MessageStructureRow> findAllStructures() {
         String query = "SELECT DISTINCT emt.message_typ_snd AS 'message type', mt.description as 'message type description',  emt.message_structure_snd as 'message structure', v.hl7_version as 'version'\n" +
-                "FROM hl7eventmessagetypes as emt\n" +
+                "FROM hl7eventmessagetypes_fixed as emt\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON v.version_id = emt.version_id\n" +
                 "LEFT JOIN hl7events AS e\n" +
                 "ON e.version_id = v.version_id AND e.event_code = emt.event_code\n" +
                 "LEFT JOIN hl7messagetypes AS mt\n" +
                 "ON mt.version_id = v.version_id AND emt.message_typ_snd = mt.message_type\n" +
-                "WHERE  v.hl7_version IN('2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
+                "WHERE  v.hl7_version IN('2.3.1','2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
                 "AND (emt.message_structure_snd, emt.version_id) \n" +
                 "IN (\n" +
                 "\tSELECT mss.message_structure, mss.version_id \n" +
-                "    FROM hl7msgstructidsegments AS mss)\n" +
+                "    FROM hl7msgstructidsegments_fixed AS mss)\n" +
                 "UNION\n" +
                 "-- receiving part\n" +
                 "SELECT DISTINCT emt.message_typ_return AS 'message type', mt.description as 'message type description', emt.message_structure_return as 'message structure', v.hl7_version as 'version'\n" +
-                "FROM hl7eventmessagetypes as emt\n" +
+                "FROM hl7eventmessagetypes_fixed as emt\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON v.version_id = emt.version_id\n" +
                 "LEFT JOIN hl7events AS e\n" +
                 "ON e.version_id = v.version_id AND e.event_code = emt.event_code\n" +
                 "LEFT JOIN hl7messagetypes AS mt\n" +
                 "ON mt.version_id = v.version_id AND emt.message_typ_return = mt.message_type\n" +
-                "WHERE v.hl7_version IN('2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
+                "WHERE v.hl7_version IN('2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.7.1', '2.7.2', '2.8', '2.8.1', '2.8.2', '2.9')\n" +
                 "AND (emt.message_structure_return, emt.version_id) \n" +
                 "IN (\n" +
                 "\tSELECT mss.message_structure, mss.version_id \n" +
-                "    FROM hl7msgstructidsegments AS mss);\n";
+                "    FROM hl7msgstructidsegments_fixed AS mss);\n";
         return this.namedParameterJdbcTemplate.query(query, new MessageStructureRowMapper());
 
     }
@@ -84,7 +84,7 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
                 "    WHEN mss.repetitional = 'TRUE' THEN '*'\n" +
                 "END as 'maxCard', -- convert repetitional and braces into maximum cardinality\n" +
                 "v.hl7_version \n" +
-                "FROM hl7msgstructidsegments as mss\n" +
+                "FROM hl7msgstructidsegments_fixed as mss\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON v.version_id = mss.version_id\n" +
                 "WHERE v.hl7_version = :version\n" +
@@ -98,7 +98,7 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
     @Override
     public List<EventRow> findEventByVersionAndStructure(String version, String structID) {
         String query ="SELECT DISTINCT emt.message_typ_snd AS 'message type', mt.description as 'message type description', emt.event_code as 'event code', e.description as 'event description', emt.message_structure_snd as 'message structure', v.hl7_version as 'version'\n" +
-                "FROM hl7eventmessagetypes as emt\n" +
+                "FROM hl7eventmessagetypes_fixed as emt\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON v.version_id = emt.version_id\n" +
                 "LEFT JOIN hl7events AS e\n" +
@@ -110,10 +110,10 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
                 "AND (emt.message_structure_snd, emt.version_id) \n" +
                 "IN (\n" +
                 "\tSELECT mss.message_structure, mss.version_id \n" +
-                "    FROM hl7msgstructidsegments AS mss)\n" +
+                "    FROM hl7msgstructidsegments_fixed AS mss)\n" +
                 "UNION\n" +
                 "SELECT DISTINCT emt.message_typ_return AS 'message type', mt.description as 'message type description', emt.event_code as 'event code', e.description as 'event description', emt.message_structure_return as 'message structure', v.hl7_version as 'version'\n" +
-                "FROM hl7eventmessagetypes as emt\n" +
+                "FROM hl7eventmessagetypes_fixed as emt\n" +
                 "LEFT JOIN hl7versions as v\n" +
                 "ON v.version_id = emt.version_id\n" +
                 "LEFT JOIN hl7events AS e\n" +
@@ -125,7 +125,7 @@ public class MessageMappingServiceImpl implements MessageStructureMappingService
                 "AND (emt.message_structure_return, emt.version_id) \n" +
                 "IN (\n" +
                 "\tSELECT mss.message_structure, mss.version_id \n" +
-                "    FROM hl7msgstructidsegments AS mss);\n" +
+                "    FROM hl7msgstructidsegments_fixed AS mss);\n" +
                 "\n";
         SqlParameterSource p = new MapSqlParameterSource().addValue("version", version).addValue("message_structure_id", structID);
         return this.namedParameterJdbcTemplate.query(query ,p,  new EventRowMapper());

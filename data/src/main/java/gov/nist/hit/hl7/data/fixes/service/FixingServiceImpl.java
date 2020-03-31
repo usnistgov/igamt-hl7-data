@@ -1,5 +1,6 @@
 package gov.nist.hit.hl7.data.fixes.service;
 
+import gov.nist.hit.hl7.data.IdService;
 import gov.nist.hit.hl7.data.domain.Component;
 import gov.nist.hit.hl7.data.domain.Datatype;
 import gov.nist.hit.hl7.data.repository.DatatypeRepository;
@@ -12,6 +13,8 @@ import java.util.Map;
 public class FixingServiceImpl implements FixingService{
     @Autowired
     DatatypeRepository datatypeRepository;
+    @Autowired
+    IdService idService;
 
     public void fixComponentDatatype(String version, String name, String newName, String oldDt, String newDT, boolean createNew){
         Datatype original = this.datatypeRepository.findByNameAndVersion(name, version);
@@ -28,6 +31,7 @@ public class FixingServiceImpl implements FixingService{
                     }
                 }
             }
+            original.setId(idService.buildId(original));
             datatypeRepository.save(original);
         }
     }

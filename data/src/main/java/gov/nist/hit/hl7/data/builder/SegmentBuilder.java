@@ -1,5 +1,6 @@
 package gov.nist.hit.hl7.data.builder;
 
+import gov.nist.hit.hl7.data.IdService;
 import gov.nist.hit.hl7.data.domain.Field;
 import gov.nist.hit.hl7.data.domain.Segment;
 import gov.nist.hit.hl7.data.domain.Field;
@@ -19,6 +20,8 @@ public class SegmentBuilder implements Builder<Segment> {
 
     @Autowired
     SegmentMappingService segmentMappingService;
+    @Autowired
+    IdService idService;
 
     @Override
     public Segment buildByIdentifierAndVersion(String identifier, String version) {
@@ -51,6 +54,7 @@ public class SegmentBuilder implements Builder<Segment> {
         ret.setVersion(row.hl7_version);
         ret.setDescription(row.description);
         ret.setChildren(getFields(row));
+        ret.setId(idService.buildId(ret));
 
         return ret;
     }
@@ -74,12 +78,11 @@ public class SegmentBuilder implements Builder<Segment> {
         f.setMaxLength(row.maxLength);
         f.setConfLength(row.confLength);
         f.setVersion(row.version);
-        f.setTable(row.table);
-        if(!row.table.equals("0000")){
-            f.setTable(row.table);
+        if (!row.table.equals("0000")) {
+            f.setTable("HL7"+ row.table);
         }
         f.setDatatype(row.datatype);
-        f.setMaxCard(row.minCard);
+        f.setMaxCard(row.maxCard);
         f.setMinCard(row.minCard);
         return f;
     }

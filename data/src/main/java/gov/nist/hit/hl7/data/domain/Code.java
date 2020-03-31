@@ -26,15 +26,12 @@ public class Code {
 	public String getCodeSystem() {
 		return codeSystem;
 	}
-
 	public void setCodeSystem(String codeSystem) {
 		this.codeSystem = codeSystem;
 	}
-
 	public String getCodeSystemOid() {
 		return codeSystemOid;
 	}
-
 	public void setCodeSystemOid(String codeSystemOid) {
 		this.codeSystemOid = codeSystemOid;
 	}

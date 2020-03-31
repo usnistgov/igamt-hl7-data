@@ -1,5 +1,6 @@
 package gov.nist.hit.hl7.data.builder;
 
+import gov.nist.hit.hl7.data.IdService;
 import gov.nist.hit.hl7.data.domain.Component;
 import gov.nist.hit.hl7.data.domain.Datatype;
 import gov.nist.hit.hl7.data.enities.ComponentRow;
@@ -15,6 +16,9 @@ public class DatatypeBuilder implements Builder<Datatype> {
 
     @Autowired
     DatatypeMappingService datatypeMappingService;
+
+    @Autowired
+    IdService idService;
 
     @Override
     public Datatype buildByIdentifierAndVersion(String identifier, String version) {
@@ -49,6 +53,7 @@ public class DatatypeBuilder implements Builder<Datatype> {
         if (row.type.equals("complex")) {
             ret.setChildren(getComponents(row));
         }
+        ret.setId(idService.buildId(ret));
         return ret;
     }
     private List<Component> getComponents(DatatypeRow row) {
@@ -71,12 +76,11 @@ public class DatatypeBuilder implements Builder<Datatype> {
         c.setMaxLength(row.maxLength);
         c.setConfLength(row.confLength);
         c.setVersion(row.version);
-        if(!row.table.equals("0000")){
-            c.setTable(row.table);
-        }
-        if(row.datatype.toLowerCase().equals(name)){
+        if (!row.table.equals("0000")) {
+            c.setTable("HL7"+row.table);
+        }if (row.datatype.toLowerCase().equals(name)) {
             c.setDatatype("-");
-        }else {
+        } else {
             c.setDatatype(row.datatype);
         }
         return c;

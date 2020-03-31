@@ -1,5 +1,6 @@
 package gov.nist.hit.hl7.data.igamt.transformer.impl;
 
+import gov.nist.hit.hl7.data.IdService;
 import gov.nist.hit.hl7.data.domain.ValueSet;
 import gov.nist.hit.hl7.data.igamt.transformer.ValueSetTransformer;
 import gov.nist.hit.hl7.data.repository.ValueSetRepository;
@@ -28,13 +29,15 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
     ValuesetRepository igamtRepo;
     @Autowired
     ValueSetRepository dataRepo;
+    @Autowired
+    IdService idService;
 
     @Override
     public void transformAll() {
+
         igamtRepo.deleteAll();
         List<ValueSet> valueSetList = dataRepo.findAll();
         igamtRepo.saveAll(transformValueSet(valueSetList));
-
     }
 
     private List<Valueset> transformValueSet(List<ValueSet> valueSetList) {
@@ -47,14 +50,13 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
 
     private Valueset convertToFinal(ValueSet valueset) {
         Valueset ret= new Valueset();
-        ret.setId(valueset.getId());
+        ret.setId("HL7-"+ valueset.getBindingIdentifier()+ "V" + valueset.getVersion().replaceAll("\\.","-" ));
         ret.setBindingIdentifier(valueset.getBindingIdentifier());
         ret.setName(valueset.getDescription());
         ret.setName(valueset.getName());
         Set<String> codeSystems = new HashSet<String>();
         codeSystems.add(valueset.getCodeSystem());
         ret.setCodeSystems(codeSystems);
-        ret.setOid(valueset.getOid());
         ret.setHl7Type(valueset.getHl7TableType());
         ret.setDescription(valueset.getDescription());
         ret.setOid(valueset.getOid());
@@ -68,6 +70,9 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
             codes.add(convertCode(valueset.getChildren().get(i)));
         }
         ret.setCodes(codes);
+        ret.setNumberOfCodes(codes.size());
+        ret.setId(idService.buildId(valueset));
+
         return ret;
     }
 
@@ -81,8 +86,7 @@ public class ValueSetTransformerImpl  implements ValueSetTransformer {
         ret.setDescription(code.getName());
         if(code.getCodeUsage() == null ||  code.getCodeUsage().isEmpty() || code.getCodeUsage().equals("O")) {
             ret.setUsage(CodeUsage.P);
-        }
-        else {
+        } else {
            ret.setUsage(CodeUsage.valueOf(code.getCodeUsage()));
         }
         return ret;

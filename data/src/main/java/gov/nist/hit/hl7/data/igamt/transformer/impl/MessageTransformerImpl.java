@@ -37,9 +37,7 @@ public class MessageTransformerImpl implements MessageTransformer {
 
         messageStructureRepository.deleteAll();
         List<MessageStructure> structures = dataRepo.findAll();
-
         List<Segment> segments = segmentRepo.findAll();
-
         Map<RealKey, String> segmentMap = segments.stream().collect(Collectors.toMap(x -> new  RealKey(x.getVersion(), x.getName()), x -> x.getId()));
         List<gov.nist.hit.hl7.igamt.conformanceprofile.domain.MessageStructure> ret = buildMessageStructures(structures,segmentMap);
         messageStructureRepository.saveAll(ret);
@@ -47,6 +45,7 @@ public class MessageTransformerImpl implements MessageTransformer {
     }
 
     private List<gov.nist.hit.hl7.igamt.conformanceprofile.domain.MessageStructure> buildMessageStructures(List<MessageStructure> structures, Map<RealKey, String> segmentMap) {
+
         List<gov.nist.hit.hl7.igamt.conformanceprofile.domain.MessageStructure> messageStructures = new ArrayList<>();
         for (MessageStructure msg: structures) {
             messageStructures.add(buildMessage(msg, segmentMap));
@@ -58,29 +57,28 @@ public class MessageTransformerImpl implements MessageTransformer {
         gov.nist.hit.hl7.igamt.conformanceprofile.domain.MessageStructure messageStructure = new gov.nist.hit.hl7.igamt.conformanceprofile.domain.MessageStructure();
         complete(messageStructure, msg);
         for (int i = 0 ; i < msg.getChildren().size(); i++) {
-            messageStructure.addChild(convertSegmentOrGroup(msg.getChildren().get(i), msg.getVersion(), segmentMap, i+1));
+            messageStructure.addChild(convertSegmentOrGroup(msg.getChildren().get(i), msg.getVersion(), segmentMap, i+1, ""));
         }
-
         return messageStructure;
     }
 
-    private SegmentRefOrGroup convertSegmentOrGroup(MessageStructureElement element, String version,Map<RealKey, String> segmentMap, int position) {
-        if(element instanceof SegmentRef){
+    private SegmentRefOrGroup convertSegmentOrGroup(MessageStructureElement element, String version,Map<RealKey, String> segmentMap, int position, String path) {
+        if ( element instanceof SegmentRef) {
             gov.nist.hit.hl7.igamt.conformanceprofile.domain.SegmentRef child = new gov.nist.hit.hl7.igamt.conformanceprofile.domain.SegmentRef();
             RealKey key = new RealKey(version,((SegmentRef) element).getSegment());
             child.setType(Type.SEGMENTREF);
-            completeChild(child, element, position);
+            completeChild(child, element, position, path);
             Ref ref = new Ref();
             ref.setId(segmentMap.get(key));
             child.setRef(ref);
             return child;
-        }else if (element instanceof Group){
+        } else if ( element instanceof Group ) {
             gov.nist.hit.hl7.igamt.conformanceprofile.domain.Group child = new gov.nist.hit.hl7.igamt.conformanceprofile.domain.Group();
-            completeChild(child, element, position);
+            completeChild(child, element, position, path);
             child.setType(Type.GROUP);
             child.setChildren(new HashSet<SegmentRefOrGroup>());
-            for( int i = 0; i<((Group) element).getChildren().size(); i++){
-                child.getChildren().add(convertSegmentOrGroup(((Group) element).getChildren().get(i),version, segmentMap,i+1 ));
+            for( int i = 0; i<((Group) element).getChildren().size(); i++) {
+                child.getChildren().add(convertSegmentOrGroup(((Group) element).getChildren().get(i),version, segmentMap,i+1, child.getId()));
             }
             return child;
         }
@@ -92,6 +90,7 @@ public class MessageTransformerImpl implements MessageTransformer {
         elm.setStructID(row.getStructID());
         elm.setType(elm.getType());
         elm.setName(row.getName());
+        elm.setMessageType(row.getMessageType());
         elm.setDescription(row.getDescription());
         elm.setType(Type.CONFORMANCEPROFILE);
         elm.setCreationDate(new Date());
@@ -117,14 +116,17 @@ public class MessageTransformerImpl implements MessageTransformer {
 
     }
 
-    public void completeChild( SegmentRefOrGroup ret , MessageStructureElement elm, int i){
-        ret.setId(new ObjectId().toString());
+    public void completeChild( SegmentRefOrGroup ret , MessageStructureElement elm, int i, String path){
+        if(path.isEmpty()){
+            ret.setId( i + "");
+        }else{
+            ret.setId( path+"." + i);
+        }
         ret.setMin(Integer.valueOf(elm.getMinCard()));
         ret.setMax(elm.getMaxCard());
         ret.setName(elm.getName());
-
         ret.setUsage(util.getUsage(elm.getUsage()));
-
+        ret.setOldUsage(util.getUsage(elm.getUsage()));
         ret.setPosition(i);
     }
 
