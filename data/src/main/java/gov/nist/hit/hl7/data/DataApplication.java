@@ -17,6 +17,7 @@ import gov.nist.hit.hl7.data.transformer.DatatypeTransformer;
 import gov.nist.hit.hl7.data.transformer.MessageTransformer;
 import gov.nist.hit.hl7.data.transformer.SegmentTransformer;
 import gov.nist.hit.hl7.data.transformer.ValueSetTransformer;
+import gov.nist.hit.hl7.resource.change.service.ApplyChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,7 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"gov.nist.hit.hl7.igamt.common", "gov.nist.hit.hl7.igamt.datatype", "gov.nist.hit.hl7.igamt.segment", "gov.nist.hit.hl7.igamt.valueset",
+@ComponentScan({"gov.nist.hit.hl7.igamt.common","gov.nist.hit.hl7.resource","gov.nist.hit.hl7.igamt.coconstraints", "gov.nist.hit.hl7.igamt.datatype", "gov.nist.hit.hl7.igamt.segment", "gov.nist.hit.hl7.igamt.valueset",
 	"gov.nist.hit.hl7.igamt.conformanceprofile","gov.nist.hit.hl7.igamt.common.config","gov.nist.hit.hl7.data"})
 public class DataApplication {
 
@@ -35,6 +36,9 @@ public class DataApplication {
 
 	@Autowired
 	FiveLevelAdapter fiveLevelAdapter;
+
+	@Autowired
+	ApplyChange applyChange;
 
 	@Autowired
 	gov.nist.hit.hl7.data.igamt.transformer.ValueSetTransformer  valueSetTransformerF2;
@@ -103,8 +107,8 @@ public class DataApplication {
 		//segmentTransformerF1.transformAll();
 		//messageTransformerF1.transformAll();
 		// add Data to IGAMT Requirement
-		fiveLevelAdapter.createNistDatatypes();
-		fiveLevelAdapter.fixFiveLevelDatatypes();
+		//fiveLevelAdapter.createNistDatatypes();
+		//fiveLevelAdapter.fixFiveLevelDatatypes();
 //
 //
 //		// final transformation
