@@ -96,7 +96,7 @@ public class SegmentTransformerImpl implements SegmentTransformer {
         DomainInfo info = new DomainInfo();
         info.setScope(Scope.HL7STANDARD);
         info.setVersion(row.getVersion());
-        Set<String> versions = new HashSet<String>();
+        List<String> versions = new ArrayList<>();
         versions.add(row.getVersion());
         info.setCompatibilityVersion(versions);
         elm.setDomainInfo(info);

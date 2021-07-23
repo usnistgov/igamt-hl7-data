@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.sql.DataSource;
 
+import ca.uhn.fhir.context.FhirContext;
 import gov.nist.hit.hl7.data.igamt.transformer.adapters.FiveLevelAdapter;
 import gov.nist.hit.hl7.data.repository.SegmentRepository;
 import gov.nist.hit.hl7.data.transformer.DatatypeTransformer;
@@ -19,6 +20,7 @@ import gov.nist.hit.hl7.data.transformer.ValueSetTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -58,8 +60,10 @@ public class DataApplication {
 	@Autowired
 	MessageTransformer messageTransformerF1;
 
-	@Autowired
-
+	@Bean()
+	public FhirContext fhirR4Context() {
+		return FhirContext.forR4();
+	}
 
 
 	public static void main(String[] args) {
@@ -85,7 +89,7 @@ public class DataApplication {
 //		valueSetTransformerF2.transformAll();
 //		datatypeTransformerF2.transformAll();
 //		segmentTransformerF2.transformAll();
-		messageTransformerF2.transformAll();
+	//	messageTransformerF2.transformAll();
 
 	}
 
@@ -94,13 +98,13 @@ public class DataApplication {
 	public void updateAll() {
 
 		// First transformation
-//		valueSetTransformerF1.transformAll();
-//		datatypeTransformerF1.transformAll();
-//		segmentTransformerF1.transformAll();
-	//	messageTransformerF1.transformAll();
+		//valueSetTransformerF1.transformAll();
+		//datatypeTransformerF1.transformAll();
+		//segmentTransformerF1.transformAll();
+		//messageTransformerF1.transformAll();
 		// add Data to IGAMT Requirement
-//		fiveLevelAdapter.createNistDatatypes();
-//		fiveLevelAdapter.fixFiveLevelDatatypes();
+		fiveLevelAdapter.createNistDatatypes();
+		fiveLevelAdapter.fixFiveLevelDatatypes();
 //
 //
 //		// final transformation
